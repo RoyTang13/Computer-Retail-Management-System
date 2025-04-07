@@ -21,7 +21,7 @@
         public boolean processPayment(double amount) {
             System.out.println("");
             System.out.println("Processing bank payment of RM" + String.format("%.2f", amount));
-            System.out.println("Card Number: **** **** **** " + cardNumber.substring(14));
+            System.out.println("Card Number: **** **** **** " + cardNumber.substring(12));
             System.out.println("Expiry Date: " + expiryDate);
             simulateLoading();
             return true;
