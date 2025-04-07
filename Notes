@@ -5,3 +5,16 @@ example:
 Login
 1) String Name
 2) String Password
+
+
+
+
+
+Payment
+1) double amount
+2) String productName
+3) String custName
+4) int choice
+5) String cardNumber;
+6) String expiryDate;
+7)  String cvv;
