@@ -85,14 +85,25 @@ public class OrderingSystem {
        Order order = new Order(amount, paymentMethod, customer, productName);
        order.processOrder();
        
-       System.out.print("Do you want to download the receipt? (yes/no): ");
-       String downloadChoice = scanner.nextLine().trim().toLowerCase();
+    // Ask user if they want to download the receipt
+        String downloadChoice = "";
 
-       //Download the receipt
-       if (downloadChoice.equals("yes")) {
-       Receipt receipt = new Receipt(); 
-       receipt.generateReceipt(customer, productName, paymentMethod, amount); // ✅ pass info
-     }
+        while (true) {
+            System.out.print("Do you want to download the receipt? (yes/no): ");
+            downloadChoice = scanner.nextLine().trim().toLowerCase();
+
+            if (downloadChoice.equals("yes")) {
+                Receipt receipt = new Receipt(); 
+                receipt.generateReceipt(customer, productName, paymentMethod, amount);
+                break;
+            } else if (downloadChoice.equals("no")) {
+                System.out.println("Thank you for purchasing the product in CompuMart.");
+                System.out.println("Hope you have a nice day!! :)");
+                break;
+            } else {
+                System.out.println("\u001B[31mInvalid input. Please enter 'yes' or 'no'.\u001B[0m");
+            }
+        }
         scanner.close();
-    }
+        }
 }
