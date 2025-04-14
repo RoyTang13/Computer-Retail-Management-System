@@ -1,59 +1,15 @@
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+
     // Payment Interface
     interface Payment {
         boolean processPayment(double amount);
          String getPaymentMethod();
     }
+    
 
-    // Bank Payment Class
-    class BankPayment implements Payment {
-        private String cardNumber;
-        private String expiryDate;
-        private String cvv;
-
-
-        public BankPayment(String cardNumber, String expiryDate, String cvv) {
-            this.cardNumber = cardNumber;
-            this.expiryDate = expiryDate;
-            this.cvv = cvv;
-        }
-
-        public boolean processPayment(double amount) {
-            System.out.println("");
-            System.out.println("Processing bank payment of RM" + String.format("%.2f", amount));
-            System.out.println("Card Number: **** **** **** " + cardNumber.substring(12));
-            System.out.println("Expiry Date: " + expiryDate);
-            simulateLoading();
-            return true;
-        }
-
-         private void simulateLoading() {
-            System.out.print("Connecting to the bank");
-            try {
-                for (int i = 0; i < 5; i++) {
-                    Thread.sleep(600); // Simulate delay (500ms)
-                    System.out.print(".");
-                }
-                System.out.println();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                }
-            }
-
-            public String getPaymentMethod() {
-            return "Bank Payment";
-            }
-         }
-    // Point Payment Class
-    class PointPayment implements Payment {
-        public boolean processPayment(double amount) {
-            System.out.println("Processing point payment of " + amount + " points");
-            return true;
-        }
-        public String getPaymentMethod() {
-        return "Point Payment";
-        }
-    }
 
     // Top-Up Credit Payment Class
     class TopUpCreditPayment implements Payment {
@@ -82,31 +38,70 @@
         private double amount;
         private Payment paymentMethod;
         private String productName;
-        private String custName;
+        private Customer customer;
 
-        public Order(double amount, Payment paymentMethod, String custName, String productName) {
-            this.custName = custName;
+        public Order(double amount, Payment paymentMethod, Customer customer, String productName) {
+            this.customer = customer;;
             this.productName = productName;
             this.amount = amount;
-            this.paymentMethod = paymentMethod;
+            this.paymentMethod = paymentMethod; 
         }
 
         public void processOrder() {
-            if (paymentMethod.processPayment(amount)) {
-                generateInvoice();
-            } else {
-                System.out.println("Payment failed.");
-            }
-        }
+         if (paymentMethod.processPayment(amount)) {
+             if (!(paymentMethod instanceof PointPayment)) {
+                 customer.addPoints((int) amount);
+             }
+             generateInvoice();
+         } else {
+             System.out.println("Payment failed.");
+         }
+     }
 
         private void generateInvoice() {
            System.out.println("\u001B[32mPayment Successful\u001B[0m");
            System.out.println("\n============ Receipt ============");
            System.out.println("Company: CompuMart");
-           System.out.println("Customer Name: " + custName);
+           System.out.println("Customer Name: " + customer);
            System.out.println("Product: " + productName);
            System.out.println("Payment Method: " + paymentMethod.getPaymentMethod());
            System.out.println("Total Price: RM" + String.format("%.2f", amount));
+           
+           if (paymentMethod instanceof PointPayment) {
+            System.out.println("Point Balance: " + customer.getPoints() + " points");
+            }
+           
            System.out.println("=================================");
+        
+         
         }
+//        public void generateReceipt() {
+//    try {
+//        // Initialize PrintWriter with file path for saving the receipt
+//        PrintWriter writer = new PrintWriter("receipt.txt");
+//        
+//        // Print the receipt details to the file
+//        writer.println("\n============ Receipt ============");
+//        writer.println("Company: CompuMart");
+//        writer.println("Customer Name: " + customer);
+//        writer.println("Product: " + productName);
+//        writer.println("Payment Method: " + paymentMethod.getPaymentMethod());
+//        writer.println("Total Price: RM" + String.format("%.2f", amount));
+//        
+//        if (paymentMethod instanceof PointPayment) {
+//            writer.println("Point Balance: " + customer.getPoints() + " points");
+//        }
+//        
+//        writer.println("=================================");
+//        
+//        // Close the writer to ensure the receipt is saved properly
+//        writer.close();
+//        
+//        // Let the user know the invoice has been saved
+//        System.out.println("Receipt successfully saved to 'receipt.txt'.");
+//        
+//    } catch (IOException e) {
+//        System.out.println("\u001B[31mFailed to save receipt: " + e.getMessage() + "\u001B[0m");
+//    }
+//}
     }

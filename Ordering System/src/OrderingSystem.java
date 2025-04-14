@@ -7,7 +7,8 @@ public class OrderingSystem {
         Scanner scanner = new Scanner(System.in);
         double amount = 100.0; // Predefined payment amount
         String productName = "Laptop"; // Predefined product name
-        String custName = "James";
+        Customer customer = new Customer("James");
+        customer.setPoints(500);
         int choice = -1;
         System.out.println("Order amount: RM" + amount);
         
@@ -62,7 +63,7 @@ public class OrderingSystem {
                         paymentMethod = new BankPayment(cardNumber, expiryDate, cvv);
                         break;
                     case 2:
-                        paymentMethod = new PointPayment();
+                        paymentMethod = new PointPayment(customer);
                         break;
                     case 3:
                         paymentMethod = new TopUpCreditPayment();
@@ -81,9 +82,17 @@ public class OrderingSystem {
             }
         }
         
-       Order order = new Order(amount, paymentMethod, custName, productName);
+       Order order = new Order(amount, paymentMethod, customer, productName);
        order.processOrder();
-        
+       
+       System.out.print("Do you want to download the receipt? (yes/no): ");
+       String downloadChoice = scanner.nextLine().trim().toLowerCase();
+
+       //Download the receipt
+       if (downloadChoice.equals("yes")) {
+       Receipt receipt = new Receipt(); 
+       receipt.generateReceipt(customer, productName, paymentMethod, amount); // ✅ pass info
+     }
         scanner.close();
     }
 }
