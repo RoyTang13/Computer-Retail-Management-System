@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package computer.retail.management.system;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -285,30 +285,3 @@ public class Cart {
 
 
 
-//test code
-  Cart cart = Cart.loadCart(custName1);
-          
-          
-        
-        
-      
-        cart.viewCart();
-        System.out.println(cart);
-        
-        cart.addItem(productName2, quantity2, amount2);
-        cart.addItem(productName1, quantity1, amount1);
-       
-        //cart.viewCart();
-        
-        //cart.addItem(productName2, 4, amount2);
-        
-       
-        
-        
-        //click the remove item 
-        cart.removeItem(productName1,2);
-        //cart.viewCart();
-         System.out.println(cart);
-        
-        //click quit menu 
-        cart.saveCart(cart);
