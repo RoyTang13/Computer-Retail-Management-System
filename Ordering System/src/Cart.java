@@ -222,9 +222,9 @@ public class Cart {
 
     
     
-    public static Cart loadCart(String customerName) {
-        Cart cart = new Cart(customerName);
-
+     public  void loadCart() {
+      
+        System.out.println(this.customerName);
         try (BufferedReader reader = new BufferedReader(new FileReader("Cart.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -234,20 +234,21 @@ public class Cart {
                 String productName = parts[2];
                 int quantity = Integer.parseInt(parts[3]);
                 double unitPrice = Double.parseDouble(parts[4]);
-                System.out.print(fileCartId+","+fileCustomerName+","+productName+","+quantity+","+unitPrice);
+                System.out.println(fileCartId+","+fileCustomerName+","+productName+","+quantity+","+unitPrice);
 
-                if (fileCustomerName.equals(customerName)) {
-                    cart.setCart_id(fileCartId); 
-                    cart.addItem(productName, quantity,unitPrice);
-                    System.out.println("NNNNNNORUN");
+                if (fileCustomerName.equals(this.customerName)) {
+                    this.setCart_id(fileCartId); 
+                    this.addItem(productName, quantity,unitPrice);
+                    System.out.println("Item loaded: " + productName + " x" + quantity);
                 }
             }
         } catch (IOException e) {
             System.out.println("️ No existing cart found. Starting fresh.");
         }
 
-        return cart;
+        
     }
+
     
     public String getCart_id() {
         return cart_id;
