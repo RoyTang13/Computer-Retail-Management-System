@@ -209,7 +209,7 @@ public class Cart {
         case 1: if (currentPage > 1) currentPage--; break;
         case 2: if (currentPage < totalPages) currentPage++; break;
         case 3: editCart(currentPage); break;
-        case 4: return; // 返回主選單
+        case 4: return; 
         default: System.out.println("Invalid input");
     }
     }
@@ -248,7 +248,7 @@ public class Cart {
             String newLine = customer + "," + product + "," + newItem.getQuantity() + "," + newItem.getUnitPrice();
             lines.add(newLine);
            
-           // optional: 顯示寫入什麼
+           
         } else {
             System.out.println("Removed item: " + product);
         }
@@ -702,7 +702,7 @@ public class Cart {
                 return;
             }
 
-            // 顯示所有訂單編號給使用者選擇
+            
             System.out.println("\nOrders found for " + customerName + ":");
             for (int i = 0; i < orders.size(); i++) {
                 for (String line : orders.get(i)) {
@@ -713,17 +713,17 @@ public class Cart {
                 }
             }
 
-            // 要求使用者輸入要查看的訂單
+            
             System.out.print("Enter order number to view: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // 清除換行
+            scanner.nextLine(); 
 
             if (choice < 1 || choice > orders.size()) {
                 System.out.println("Invalid choice.");
                 return;
             }
 
-            // 顯示選中的訂單內容
+            
             System.out.println("\n-------------- ORDER --------------");
             for (String line : orders.get(choice - 1)) {
                 System.out.println(line);
@@ -763,7 +763,7 @@ public class Cart {
                 }
 
                 if (isInsideOrder) {
-                    currentOrder.add(line); // 只要在一筆訂單中就先記錄
+                    currentOrder.add(line); 
                 }
             }
         } catch (IOException e) {
