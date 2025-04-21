@@ -1,0 +1,579 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Scanner;
+
+
+public class userSystem {
+    private static final ArrayList<User> users = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static User currentUser = null;
+    
+    public static void main(String[] args) {
+        loadUsersFromFile();
+        
+        // 检查员工账号，若为0，自动注册新员工账号
+        if (getStaffCount() == 0) {
+            System.out.println("\n=== SYSTEM INITIALIZATION ===");
+            System.out.println("No staff accounts found. Creating first staff account.");
+            registerFirstStaff();
+        }
+        
+        showMainMenu();
+    }
+
+    //算总共有几个员工账号
+    private static int getStaffCount() {
+        int count = 0;
+        for (User user : users) {
+            if (user.isStaff()) {
+                count++;
+            }
+        }
+        return count;
+    }
+    //算总共有几个顾客账号
+    private static int getCustomerCount() {
+        int count = 0;
+        for (User user : users) {
+            if (!user.isStaff()) {
+                count++;
+            }
+        }
+        return count;
+    }
+    //系统打开后，自动注册第一个员工账号
+    private static void registerFirstStaff() {
+        System.out.println("\n=== CREATE FIRST STAFF ACCOUNT ===");
+        
+        registerStaff();
+        
+        System.out.println("\nFirst staff account created successfully!");
+        System.out.println("Please login with this account to manage the system.");
+    }
+    //主菜单
+    private static void showMainMenu() {
+        while (true) {
+            System.out.println("\n=== CompuMart Login System ===");
+            System.out.println("1. Login");
+            System.out.println("2. Register as Customer");
+            
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = getIntInput(0, 2);
+
+            switch (choice) {
+                case 1 -> loginUser();
+                case 2 -> registerCustomer();
+                case 3 -> {
+                    if (currentUser != null && currentUser.isStaff()) {
+                        registerStaff();
+                    }
+                }
+                case 0 -> {
+                    System.out.println("Thank you for using CompuMart. Goodbye!");
+                    
+                    System.exit(0);
+                }
+                default -> {
+                System.out.println("Invalid input, Please try again");
+            }
+            }
+        }
+    }
+    //登入账号
+    private static void loginUser() {
+        System.out.println("\n=== Login ===");
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        for (User user : users) {
+            if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user;
+                System.out.println("\nLogin successful! Welcome, " + username + "!");
+                showUserMenu();
+                return;
+            }
+        }
+        System.out.println("Invalid username or password.");
+    }
+    //顾客注册账号
+    private static void registerCustomer() {
+        System.out.println("\n=== Customer Registration ===");
+        
+        String email = getValidInput("Enter customer email: ", 
+                                     "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
+                                     "Invalid email format");
+        String username = getValidInput("Enter customer username (4-20 word): ", 
+                                        "^[a-zA-Z0-9]{4,20}$", 
+                                        "Username must be 4-20 number or letter");
+        String password = getValidInput("Enter customer password (e.g Aa1234567): ", 
+                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", 
+                                        "Password must contain at least 8 characters, including uppercase, lowercase and numbers");
+        String phone = getValidInput("Enter customer phone (e.g 012-3456789): ", 
+                                     "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                     "Invalid phone number");
+        
+        System.out.print("Enter age: ");
+        int age = getIntInput(1, 150);
+        
+        
+        System.out.print("Enter address: ");
+        String address = scanner.nextLine();
+        
+        
+        customerDetail newCustomer = new customerDetail(email, username, password, phone, 
+                                                      generateNextID(false), age, address);
+        users.add(newCustomer);
+        
+        System.out.println("\nRegistration successful! Your user ID is: " + newCustomer.getUserID());
+    }
+    //注册员工账号
+    private static void registerStaff() {
+        System.out.println("\n=== Staff Registration ===");
+        
+        String email = getValidInput("Enter staff email: ", 
+                                     "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
+                                     "Invalid email format");
+        String username = getValidInput("Enter staff username (4-20 word): ", 
+                                        "^[a-zA-Z0-9]{4,20}$", 
+                                        "Username must be 4-20 number or letter");
+        String password = getValidInput("Enter staff password (e.g Aa1234567): ", 
+                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", 
+                                        "Password must contain at least 8 characters, including uppercase, lowercase and numbers");
+        String phone = getValidInput("Enter staff phone (e.g 012-3456789): ", 
+                                     "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                     "Invalid phone number");
+        
+        System.out.print("Enter age (18-100): ");
+        int age = getIntInput(18, 100);
+        
+        
+        System.out.print("Enter address: ");
+        String address = scanner.nextLine();
+        
+        
+        staffDetail newStaff = new staffDetail(email, username, password, phone, 
+                                              generateNextID(true), age, address);
+        users.add(newStaff);
+        
+        System.out.println("\nNew staff member registered successfully!");
+        saveUsersToFile();
+    }
+    //用户菜单
+    private static void showUserMenu() {
+        while (currentUser != null) {
+            System.out.println("\n=== User Menu ===");
+            System.out.println("1. View Profile");
+            System.out.println("2. Menu");
+            System.out.println("3. Cart");
+            System.out.println("4. Make Payment");
+            if (currentUser.isStaff()) {
+                System.out.println("5. Points System");
+                System.out.println("6. View All Users");
+                System.out.println("7. Register New Staff");
+                System.out.println("8. Manage Customer Points");
+            }
+            
+            System.out.println("0. Logout");
+            System.out.print("Enter your choice: ");
+            
+            int maxChoice = currentUser.isStaff() ? 8 : 4;
+            int choice = getIntInput(0, maxChoice);
+
+            switch (choice) {
+                case 1 -> viewProfile();
+                case 2 -> editProfile();//change this
+                case 3 -> editProfile();//change this
+                case 4 -> editProfile();//change this
+                case 5 ->{
+                    if (currentUser.isStaff()) {
+                        managePoints();
+                    }
+                    
+                    }
+                case 6 -> {
+                    if (currentUser.isStaff()) {
+                        viewAllUsers();
+                    }
+                }
+                case 7 -> {
+                    if (currentUser.isStaff()) {
+                        registerStaff();
+                    }
+                }
+                case 8 -> {
+                    if (currentUser.isStaff()) {
+                        manageCustomerPoints();
+                    }
+                }
+                case 0 -> logout();
+                default -> {
+                System.out.println("Invalid input, Please try again");
+            }
+            }
+        }
+    }
+    //个人资料
+    private static void viewProfile() {
+        System.out.println("\n=== Your Profile ===");
+        System.out.println("User ID: " + currentUser.getUserID());
+        System.out.println("Username: " + currentUser.getUserName());
+        System.out.println("Email: " + currentUser.getEmail());
+        System.out.println("Phone: " + currentUser.getPhone());
+        System.out.println("Age: " + currentUser.getAge());
+        System.out.println("Address: " + currentUser.getAddress());
+        System.out.println("Points: " + currentUser.getPoints());
+        System.out.println("Account Type: " + (currentUser.isStaff() ? "Staff" : "Customer"));
+        
+        System.out.println("\n================================");
+        System.out.println("1. Edit profile");
+        System.out.println("2. Return menu");
+        int choice = getIntInput(1,2);
+        switch(choice) {
+            case 1 ->{
+                editProfile();
+            }
+            case 2 ->{
+                
+            }
+
+            default ->{
+                System.out.println("Invalid input, Please try again");
+            }
+        }
+        
+    }
+    //编辑个人资料
+    private static void editProfile() {
+        System.out.println("\n=== Edit Profile ===");
+        System.out.println("1. Change Email");
+        System.out.println("2. Change Password");
+        System.out.println("3. Change Phone");
+        System.out.println("4. Change Age");
+        System.out.println("5. Change Address");
+        System.out.println("6. Back to Menu");
+        System.out.print("Enter your choice: ");
+        
+        int choice = getIntInput(1, 6);
+        
+        switch (choice) {
+            case 1 -> {
+                String newEmail = getValidInput("Enter new email: ", 
+                                                "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
+                                                "Invalid email format");
+                currentUser.setEmail(newEmail);
+                System.out.println("Email updated successfully.");
+                saveUsersToFile();
+            }
+            case 2 -> {
+                String newPassword = getValidInput("Enter new password: ", 
+                                                   "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
+                                                   "Password must contain at least 8 characters, including uppercase, lowercase and numbers");
+                currentUser.setPassword(newPassword);
+                System.out.println("Password updated successfully.");
+                saveUsersToFile();
+            }
+            case 3 -> {
+                String newPhone = getValidInput("Enter new phone: ", 
+                                                "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                                "Invalid phone number");
+                currentUser.setPhone(newPhone);
+                System.out.println("Phone updated successfully.");
+                saveUsersToFile();
+            }
+            case 4 -> {
+                System.out.print("Enter new age: ");
+                int newAge = getIntInput(1, 100);
+                scanner.nextLine(); // 清除换行符
+                currentUser.setAge(newAge);
+                System.out.println("Age updated successfully.");
+                saveUsersToFile();
+            }
+            case 5 -> {
+                System.out.print("Enter new address: ");
+                String newAddress = scanner.nextLine();
+                currentUser.setAddress(newAddress);
+                System.out.println("Address updated successfully.");
+                saveUsersToFile();
+            }
+            case 6 -> {
+            }
+            default -> {
+                System.out.println("Invalid input, Please try again");
+            }
+            
+        }
+        
+            saveUsersToFile();   
+    }
+    //编辑个人POINT（让员工测试）
+    private static void managePoints() {
+        System.out.println("\n=== Points System ===");
+        System.out.println("Current Points: " + currentUser.getPoints());
+        System.out.println("1. Earn Points");
+        System.out.println("2. Redeem Points");
+        System.out.println("3. Back to Menu");
+        System.out.print("Enter your choice: ");
+        
+        int choice = getIntInput(1, 3);
+        
+        switch (choice) {
+            case 1 -> {
+                System.out.print("Enter points to earn: ");
+                int earnPoints = getIntInput(1, Integer.MAX_VALUE);
+                currentUser.addPoints(earnPoints);
+                System.out.println(earnPoints + " points added. Total: " + currentUser.getPoints());
+                saveUsersToFile();
+            }
+                
+            case 2 -> {
+                System.out.print("Enter points to redeem: ");
+                int redeemPoints = getIntInput(1, Integer.MAX_VALUE);
+                if (currentUser.deductPoints(redeemPoints)) {
+                    System.out.println(redeemPoints + " points redeemed. Remaining: " + currentUser.getPoints());
+                    saveUsersToFile();
+                } else {
+                    System.out.println("Invalid points. You only have " + currentUser.getPoints() + " points.");
+                }
+            }
+            case 3 -> {
+            }
+            default -> {
+                System.out.println("Invalid input, Please try again");
+            }
+        }
+        // 返回菜单
+    }
+    //编辑顾客POINT
+    private static void manageCustomerPoints() {
+        
+        //Check customer count
+        if(getCustomerCount() == 0){
+            System.out.println("No customer found");
+            return;
+        }
+        
+        System.out.println("\n=== Manage Customer Points ===");
+        System.out.println("1. Add Points to Customer");
+        System.out.println("2. Deduct Points from Customer");
+        System.out.println("0. Back to Menu");
+        System.out.print("Enter your choice: ");
+        
+        int choice = getIntInput(1, 3);
+        
+        switch (choice) {
+            case 1 -> addPointsToCustomer();
+            case 2 -> deductPointsFromCustomer();
+            case 0 -> {
+               
+            }
+            default -> {
+                System.out.println("Invalid input, Please try again");
+            }
+        }
+        
+    }
+    //选择顾客
+    private static User findCustomerByID(int customerID){
+        for (User user : users){
+            if (user.getUserID() == customerID && !user.isStaff()){
+                return user;
+            }
+        }
+        return null;
+    }
+    //增加顾客的POINT（员工用）
+    private static void addPointsToCustomer() {
+        System.out.println("\n=== Add Points to Customer ===");
+        viewAllCustomers();
+        
+        System.out.print("\nEnter customer ID to add points: ");
+        int customerId = getIntInput(1, Integer.MAX_VALUE);
+        
+        User customer = findCustomerByID(customerId);
+        if (customer == null || customer.isStaff()) {
+            System.out.println("Invalid customer ID or ID belongs to a staff member.");
+            return;
+        }
+        
+        System.out.print("Enter points to add: ");
+        int pointsToAdd = getIntInput(1, Integer.MAX_VALUE);
+        
+        customer.addPoints(pointsToAdd);
+        saveUsersToFile();
+        System.out.println(pointsToAdd + " points added to customer " + customer.getUserName() + 
+                          ". New total: " + customer.getPoints());
+    }
+    //减少顾客的POINT（员工用）
+    private static void deductPointsFromCustomer() {
+        System.out.println("\n=== Deduct Points from Customer ===");
+        viewAllCustomers();
+        
+        System.out.print("\nEnter customer ID to deduct points: ");
+        int customerId = getIntInput(1, Integer.MAX_VALUE);
+        
+        User customer = findCustomerByID(customerId);
+        if (customer == null || customer.isStaff()) {
+            System.out.println("Invalid customer ID or ID belongs to a staff member.");
+            return;
+        }
+        
+        System.out.print("Enter points to deduct: ");
+        int pointsToDeduct = getIntInput(1, Integer.MAX_VALUE);
+        
+        if (customer.deductPoints(pointsToDeduct)) {
+            saveUsersToFile();
+            System.out.println(pointsToDeduct + " points deducted from customer " + 
+                              customer.getUserName() + ". Remaining: " + customer.getPoints());
+        } else {
+            System.out.println("Failed to deduct points. Customer only has " + 
+                              customer.getPoints() + " points.");
+        }
+    }
+    //显示顾客（只有顾客）
+    private static void viewAllCustomers() {
+        System.out.println("\n=== All Customers ===");
+        System.out.printf("%-10s %-15s %-25s %-10s%n", 
+                          "ID", "Username", "Email", "Points");
+        
+        for (User user : users) {
+            if (!user.isStaff()) {
+                System.out.printf("%-10d %-15s %-25s %-10d%n",
+                                 user.getUserID(), user.getUserName(), 
+                                 user.getEmail(), user.getPoints());
+            }
+        }
+    }
+
+    private static void viewAllUsers() {
+    System.out.println("\n=== All Users ===");
+    
+    // 显示工作人员(S开头)，按ID数字部分排序
+    System.out.println("\n[Staff Members]");
+    System.out.printf("%-10s %-15s %-25s %-15s %-5s %-50s %-10s%n",
+                      "ID", "Username", "Email", "Phone", "Age", "Address", "Points");
+    
+    users.stream()
+         .filter(User::isStaff)//筛选是员工的账号
+         .sorted(Comparator.comparingInt(User::getUserID)) // 按数字部分排序
+         .forEach(user -> printUserRow(user));
+
+    // 显示顾客(C开头)，按ID数字部分排序
+    System.out.println("\n[Customers]");
+    System.out.printf("%-10s %-15s %-25s %-15s %-5s %-50s %-10s%n",
+                    "ID", "Username", "Email", "Phone", "Age", "Address", "Points");
+    
+    users.stream()
+         .filter(user -> !user.isStaff())//筛选是顾客的账号
+         .sorted(Comparator.comparingInt(User::getUserID)) // 按数字部分排序
+         .forEach(user -> printUserRow(user));
+}
+
+    //显示用户账号资料
+    private static void printUserRow(User user) {
+    System.out.printf("%-10s %-15s %-25s %-15s %-5d %-50s %-10d%n",
+                    user.getFormattedID(), // 显示格式化ID (S001/C001)
+                    user.getUserName(),
+                    user.getEmail(),
+                    user.getPhone(),
+                    user.getAge(),
+                    user.getAddress(),
+                    user.getPoints());
+    }
+
+        private static void logout() {
+        saveUsersToFile();
+        currentUser = null;
+        System.out.println("Logged out successfully.");
+    }
+
+    // 捕抓一切需要输入“选择”的地方；如果输入错误的int，会跳出错误讯息
+    private static int getIntInput(int min, int max) {
+        while (true) {
+            try {
+                int input = Integer.parseInt(scanner.nextLine());
+                if (input >= min && input <= max) {
+                    return input;
+                }
+                System.out.printf("Please enter a number between %d and %d: ", min, max);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a number: ");
+            }
+        }
+    }
+    //捕抓一切需要输入“讯息”的地方；如果输入错误的String，会跳出错误讯息
+    private static String getValidInput(String prompt, String regex, String errorMsg) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            if (input.matches(regex)) {
+                return input;
+            }
+            System.out.println(errorMsg);
+        }
+    }
+    
+    //储存用户资料
+    private static void saveUsersToFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
+        for (User user : users) {
+            writer.write(user.toTextFormat());
+            writer.newLine();
+        }
+        System.out.println("User data saved to users.txt");
+        } catch (IOException e) {
+        System.out.println("Error saving data: " + e.getMessage());
+        }
+    }
+
+    //加载用户资料
+    private static void loadUsersFromFile() {
+        File file = new File("users.txt");
+        if (!file.exists()) {
+        System.out.println("No existing data found. Starting fresh.");
+        return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        String line;
+            while ((line = reader.readLine()) != null) {
+                User user = User.fromTextFormat(line);
+                if (user != null) {
+                    users.add(user);
+                }
+            }
+                System.out.println("Loaded " + users.size() + " users from file.");
+            } catch (IOException e) {
+                System.out.println("Error loading data: " + e.getMessage());
+            }
+    }
+        private static int generateNextID(boolean isStaff) {
+        if (users.isEmpty()) return 1;
+
+        int maxStaffId = users.stream()
+               .filter(User::isStaff)
+               .mapToInt(User::getUserID)
+               .max()
+               .orElse(0);
+
+        int maxCustomerId = users.stream()
+            .filter(user -> !user.isStaff())
+            .mapToInt(User::getUserID)
+            .max()
+            .orElse(0);
+
+        return isStaff ? maxStaffId + 1 : maxCustomerId + 1;
+        }
+}
+
+
