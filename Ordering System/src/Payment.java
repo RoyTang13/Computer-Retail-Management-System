@@ -121,7 +121,7 @@ import java.util.Scanner;
         writer.newLine();
         writer.write("Customer: " + customer.getName());
         writer.newLine();
-        writer.write("Payment Method: " + paymentMethod.getPaymentMethod()); // 根據你的 Payment class 內容調整
+        writer.write("Payment Method: " + paymentMethod.getPaymentMethod()); 
         writer.newLine();
         writer.write("Total Amount: " + this.amount);
         writer.newLine();
