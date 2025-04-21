@@ -369,7 +369,7 @@ public class userSystem {
         System.out.println("0. Back to Menu");
         System.out.print("Enter your choice: ");
         
-        int choice = getIntInput(1, 3);
+        int choice = getIntInput(0, 2);
         
         switch (choice) {
             case 1 -> addPointsToCustomer();
@@ -460,7 +460,7 @@ public class userSystem {
     
     // 显示工作人员(S开头)，按ID数字部分排序
     System.out.println("\n[Staff Members]");
-    System.out.printf("%-10s %-15s %-25s %-15s %-5s %-50s %-10s%n",
+    System.out.printf("%-10s %-15s %-25s %-15s %-5s %-70s %-10s%n",
                       "ID", "Username", "Email", "Phone", "Age", "Address", "Points");
     
     users.stream()
@@ -470,7 +470,7 @@ public class userSystem {
 
     // 显示顾客(C开头)，按ID数字部分排序
     System.out.println("\n[Customers]");
-    System.out.printf("%-10s %-15s %-25s %-15s %-5s %-50s %-10s%n",
+    System.out.printf("%-10s %-15s %-25s %-15s %-5s %-70s %-10s%n",
                     "ID", "Username", "Email", "Phone", "Age", "Address", "Points");
     
     users.stream()
@@ -481,7 +481,7 @@ public class userSystem {
 
     //显示用户账号资料
     private static void printUserRow(User user) {
-    System.out.printf("%-10s %-15s %-25s %-15s %-5d %-50s %-10d%n",
+    System.out.printf("%-10s %-15s %-25s %-15s %-5d %-70s %-10d%n",
                     user.getFormattedID(), // 显示格式化ID (S001/C001)
                     user.getUserName(),
                     user.getEmail(),
@@ -557,6 +557,7 @@ public class userSystem {
                 System.out.println("Error loading data: " + e.getMessage());
             }
     }
+    
         private static int generateNextID(boolean isStaff) {
         if (users.isEmpty()) return 1;
 
