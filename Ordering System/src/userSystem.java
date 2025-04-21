@@ -116,9 +116,10 @@ public class userSystem {
         String username = getValidInput("Enter customer username (4-20 word): ", 
                                         "^[a-zA-Z0-9]{4,20}$", 
                                         "Username must be 4-20 number or letter");
-        String password = getValidInput("Enter customer password (e.g Aa1234567): ", 
-                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", 
-                                        "Password must contain at least 8 characters, including uppercase, lowercase and numbers");
+        String password = getValidInput("Enter new password: ", 
+                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
+                                        "Password must contain at least 8 characters, " +
+                                        "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
         String phone = getValidInput("Enter customer phone (e.g 012-3456789): ", 
                                      "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
                                      "Invalid phone number");
@@ -147,9 +148,10 @@ public class userSystem {
         String username = getValidInput("Enter staff username (4-20 word): ", 
                                         "^[a-zA-Z0-9]{4,20}$", 
                                         "Username must be 4-20 number or letter");
-        String password = getValidInput("Enter staff password (e.g Aa1234567): ", 
-                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", 
-                                        "Password must contain at least 8 characters, including uppercase, lowercase and numbers");
+        String password = getValidInput("Enter new password: ", 
+                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
+                                        "Password must contain at least 8 characters, " +
+                                        "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
         String phone = getValidInput("Enter staff phone (e.g 012-3456789): ", 
                                      "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
                                      "Invalid phone number");
@@ -277,8 +279,9 @@ public class userSystem {
             }
             case 2 -> {
                 String newPassword = getValidInput("Enter new password: ", 
-                                                   "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
-                                                   "Password must contain at least 8 characters, including uppercase, lowercase and numbers");
+                                        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
+                                        "Password must contain at least 8 characters, " +
+                                        "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
                 currentUser.setPassword(newPassword);
                 System.out.println("Password updated successfully.");
                 saveUsersToFile();
@@ -525,56 +528,96 @@ public class userSystem {
     
     //储存用户资料
     private static void saveUsersToFile() {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
-        for (User user : users) {
-            writer.write(user.toTextFormat());
-            writer.newLine();
-        }
-        System.out.println("User data saved to users.txt");
-        } catch (IOException e) {
-        System.out.println("Error saving data: " + e.getMessage());
-        }
+        try {
+            // 保存 staff 数据到 staff.txt
+            BufferedWriter staffWriter = new BufferedWriter(new FileWriter("staff.txt"));
+            for (User user : users) {
+                if (user.isStaff()) {
+                    staffWriter.write(user.toTextFormat());
+                    staffWriter.newLine();
+                    }
+                }
+                
+            }catch (IOException e) {
+                System.out.println("Error saving data: " + e.getMessage());
+                return;
+            }
+        
+        // 保存 customer 数据到 customer.txt
+        try {
+            BufferedWriter customerWriter = new BufferedWriter(new FileWriter("customer.txt"));
+            for (User user : users) {
+                if (!user.isStaff()) {
+                    customerWriter.write(user.toTextFormat());
+                    customerWriter.newLine();
+                    }
+                }
+                
+                System.out.println("User data saved to staff.txt and customer.txt");
+            }catch (IOException e) {
+                System.out.println("Error saving data: " + e.getMessage());
     }
+}
 
     //加载用户资料
     private static void loadUsersFromFile() {
-        File file = new File("users.txt");
-        if (!file.exists()) {
-        System.out.println("No existing data found. Starting fresh.");
-        return;
-        }
+    users.clear(); // 清空现有数据
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
-        String line;
+    // 加载 staff 数据
+    File staffFile = new File("staff.txt");
+    if (staffFile.exists()) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("staff.txt"))) {
+            String line;
             while ((line = reader.readLine()) != null) {
                 User user = User.fromTextFormat(line);
                 if (user != null) {
                     users.add(user);
                 }
             }
-                System.out.println("Loaded " + users.size() + " users from file.");
-            } catch (IOException e) {
-                System.out.println("Error loading data: " + e.getMessage());
-            }
+            System.out.println("Loaded " + getStaffCount() + " staff members from staff.txt");
+        } catch (IOException e) {
+            System.out.println("Error loading staff data: " + e.getMessage());
+        }
     }
+
+    // 加载 customer 数据
+    File customerFile = new File("customer.txt");
+    if (customerFile.exists()) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("customer.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                User user = User.fromTextFormat(line);
+                if (user != null) {
+                    users.add(user);
+                }
+            }
+            System.out.println("Loaded " + getCustomerCount() + " customers from customer.txt");
+        } catch (IOException e) {
+            System.out.println("Error loading customer data: " + e.getMessage());
+        }
+    }
+}
     
-        private static int generateNextID(boolean isStaff) {
+    private static int generateNextID(boolean isStaff) {
         if (users.isEmpty()) return 1;
 
-        int maxStaffId = users.stream()
-               .filter(User::isStaff)
-               .mapToInt(User::getUserID)
-               .max()
-               .orElse(0);
-
-        int maxCustomerId = users.stream()
-            .filter(user -> !user.isStaff())
-            .mapToInt(User::getUserID)
-            .max()
-            .orElse(0);
-
-        return isStaff ? maxStaffId + 1 : maxCustomerId + 1;
+        // 如果是 staff，查找最大的 staff ID
+        if (isStaff) {
+        return users.stream()
+                .filter(User::isStaff)
+                .mapToInt(User::getUserID)
+                .max()
+                .orElse(0) + 1;
         }
+        // 如果是 customer，查找最大的 customer ID
+        else {
+        return users.stream()
+                .filter(user -> !user.isStaff())
+                .mapToInt(User::getUserID)
+                .max()
+                .orElse(0) + 1;
+        }
+    }
 }
 
 
