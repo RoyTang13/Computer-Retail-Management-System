@@ -1,0 +1,52 @@
+Sarah,Keyboard,3,45.0
+Michael,Printer,1,200.0
+David,Mouse,10,25.0
+Robert,SSD,4,120.0
+Daniel,USB Drive,8,15.0
+Jennifer,External HDD,1,110.0
+Nicole,Smartphone,3,700.0
+Olivia,Desk Lamp,7,35.0
+William,Power Bank,4,40.0
+Benjamin,CPU Cooler,1,80.0
+Ava,Smart Watch,3,250.0
+Emma,Mouse Pad,2,12.0
+Liam,Monitor,1,180.0
+Sophia,Smart Lock,1,130.0
+Noah,Portable Charger,3,35.0
+Mia,Laptop,1,1000.0
+Amelia,Router,1,95.0
+Lucas,Desk Organizer,4,30.0
+Harper,Smart Light,2,25.0
+Logan,Printer,1,220.0
+Ella,Phone Stand,3,14.0
+Mason,Webcam,1,85.0
+Avery,Smart Scale,2,60.0
+Ethan,Speaker,1,140.0
+Isabella,Tablet Stand,2,35.0
+Alexander,Flash Drive,5,12.0
+Charlotte,Phone Case,4,18.0
+Henry,External HDD,2,115.0
+Abigail,Stylus Pen,1,45.0
+Jack,Microphone,1,100.0
+John,Tablet,10,300.0
+John,Webcam,10,90.0
+John,Router,2,70.0
+John,Graphics Card,10,450.0
+John,Wireless Earbuds,2,120.0
+John,Mechanical Keyboard,13,90.0
+John,HDMI Cable,15,10.0
+John,VR Headset,14,350.0
+John,Microphone,8,130.0
+John,Smart Bulb,9,20.0
+John,Drawing Tablet,8,280.0
+John,Smart Thermostat,7,190.0
+John,Office Chair,19,210.0
+John,Charging Station,5,45.0
+John,Bluetooth Adapter,7,15.0
+John,USB Hub,4,25.0
+John,Webcam Cover,18,5.0
+John,Monitor Arm,4,85.0
+John,Smart Plug,10,18.0
+James,Portable SSD,13,160.0
+James,Noise Cancelling Headphones,20,220.0
+James,Ergonomic Mouse,12,60.0

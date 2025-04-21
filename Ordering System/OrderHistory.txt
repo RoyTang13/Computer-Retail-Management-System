@@ -1,0 +1,14 @@
+OrderID: 1745235563247-418
+Customer: James
+Payment Method: Point Payment
+Total Amount: 110.0
+Products:
+- LED Strip, Qty: 5, UnitPrice: 22.0
+-----
+OrderID: 1745235660032-708
+Customer: James
+Payment Method: Point Payment
+Total Amount: 110.0
+Products:
+- Laptop Stand, Qty: 2, UnitPrice: 55.0
+-----
