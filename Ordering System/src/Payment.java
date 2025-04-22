@@ -1,4 +1,4 @@
-package computer.retail.management.system;
+
 
 
 import java.io.BufferedWriter;
