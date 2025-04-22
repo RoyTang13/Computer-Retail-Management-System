@@ -10,25 +10,26 @@ import java.util.Scanner;
 
 
 public class userSystem {
-    private static final ArrayList<User> users = new ArrayList<>();
-    private static final Scanner scanner = new Scanner(System.in);
-    private static User currentUser = null;
+    private final ArrayList<User> users = new ArrayList<>();
+    Scanner scanner = new Scanner(System.in);
+    private User currentUser = null;
     
-    public static void main(String[] args) {
-        loadUsersFromFile();
+    public void startUserSystem(){
+        userSystem system = new userSystem();
+        system.loadUsersFromFile();
         
         // 检查员工账号，若为0，自动注册新员工账号
-        if (getStaffCount() == 0) {
+        if (system.getStaffCount() == 0) {
             System.out.println("\n=== SYSTEM INITIALIZATION ===");
             System.out.println("No staff accounts found. Creating first staff account.");
-            registerFirstStaff();
+            system.registerFirstStaff();
         }
         
-        showMainMenu();
+        system.showMainMenu();
     }
 
     //算总共有几个员工账号
-    private static int getStaffCount() {
+    public int getStaffCount() {
         int count = 0;
         for (User user : users) {
             if (user.isStaff()) {
@@ -38,7 +39,7 @@ public class userSystem {
         return count;
     }
     //算总共有几个顾客账号
-    private static int getCustomerCount() {
+    public int getCustomerCount() {
         int count = 0;
         for (User user : users) {
             if (!user.isStaff()) {
@@ -48,7 +49,7 @@ public class userSystem {
         return count;
     }
     //系统打开后，自动注册第一个员工账号
-    private static void registerFirstStaff() {
+    public void registerFirstStaff() {
         System.out.println("\n=== CREATE FIRST STAFF ACCOUNT ===");
         
         registerStaff();
@@ -57,7 +58,7 @@ public class userSystem {
         System.out.println("Please login with this account to manage the system.");
     }
     //主菜单
-    private static void showMainMenu() {
+    public void showMainMenu() {
         while (true) {
             System.out.println("\n=== CompuMart Login System ===");
             System.out.println("1. Login");
@@ -88,7 +89,7 @@ public class userSystem {
         }
     }
     //登入账号
-    private static void loginUser() {
+    public void loginUser() {
         System.out.println("\n=== Login ===");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -107,7 +108,7 @@ public class userSystem {
         System.out.println("Invalid username or password.");
     }
     //顾客注册账号
-    private static void registerCustomer() {
+    public void registerCustomer() {
         System.out.println("\n=== Customer Registration ===");
         
         String email = getValidInput("Enter customer email: ", 
@@ -139,7 +140,7 @@ public class userSystem {
         System.out.println("\nRegistration successful! Your user ID is: " + newCustomer.getUserID());
     }
     //注册员工账号
-    private static void registerStaff() {
+    public void registerStaff() {
         System.out.println("\n=== Staff Registration ===");
         
         String email = getValidInput("Enter staff email: ", 
@@ -172,7 +173,7 @@ public class userSystem {
         saveUsersToFile();
     }
     //用户菜单
-    private static void showUserMenu() {
+    public void showUserMenu() {
         while (currentUser != null) {
             System.out.println("\n=== User Menu ===");
             System.out.println("1. View Profile");
@@ -226,7 +227,7 @@ public class userSystem {
         }
     }
     //个人资料
-    private static void viewProfile() {
+    public void viewProfile() {
         System.out.println("\n=== Your Profile ===");
         System.out.println("User ID: " + currentUser.getUserID());
         System.out.println("Username: " + currentUser.getUserName());
@@ -256,7 +257,7 @@ public class userSystem {
         
     }
     //编辑个人资料
-    private static void editProfile() {
+    public void editProfile() {
         System.out.println("\n=== Edit Profile ===");
         System.out.println("1. Change Email");
         System.out.println("2. Change Password");
@@ -320,7 +321,7 @@ public class userSystem {
             saveUsersToFile();   
     }
     //编辑个人POINT（让员工测试）
-    private static void managePoints() {
+    public void managePoints() {
         System.out.println("\n=== Points System ===");
         System.out.println("Current Points: " + currentUser.getPoints());
         System.out.println("1. Earn Points");
@@ -358,7 +359,7 @@ public class userSystem {
         // 返回菜单
     }
     //编辑顾客POINT
-    private static void manageCustomerPoints() {
+    public void manageCustomerPoints() {
         
         //Check customer count
         if(getCustomerCount() == 0){
@@ -387,7 +388,7 @@ public class userSystem {
         
     }
     //选择顾客
-    private static User findCustomerByID(int customerID){
+    public User findCustomerByID(int customerID){
         for (User user : users){
             if (user.getUserID() == customerID && !user.isStaff()){
                 return user;
@@ -396,7 +397,7 @@ public class userSystem {
         return null;
     }
     //增加顾客的POINT（员工用）
-    private static void addPointsToCustomer() {
+    public void addPointsToCustomer() {
         System.out.println("\n=== Add Points to Customer ===");
         viewAllCustomers();
         
@@ -418,7 +419,7 @@ public class userSystem {
                           ". New total: " + customer.getPoints());
     }
     //减少顾客的POINT（员工用）
-    private static void deductPointsFromCustomer() {
+    public void deductPointsFromCustomer() {
         System.out.println("\n=== Deduct Points from Customer ===");
         viewAllCustomers();
         
@@ -444,7 +445,7 @@ public class userSystem {
         }
     }
     //显示顾客（只有顾客）
-    private static void viewAllCustomers() {
+    private void viewAllCustomers() {
         System.out.println("\n=== All Customers ===");
         System.out.printf("%-10s %-15s %-25s %-10s%n", 
                           "ID", "Username", "Email", "Points");
@@ -458,7 +459,7 @@ public class userSystem {
         }
     }
 
-    private static void viewAllUsers() {
+    public void viewAllUsers() {
     System.out.println("\n=== All Users ===");
     
     // 显示工作人员(S开头)，按ID数字部分排序
@@ -483,7 +484,7 @@ public class userSystem {
 }
 
     //显示用户账号资料
-    private static void printUserRow(User user) {
+    public void printUserRow(User user) {
     System.out.printf("%-10s %-15s %-25s %-15s %-5d %-70s %-10d%n",
                     user.getFormattedID(), // 显示格式化ID (S001/C001)
                     user.getUserName(),
@@ -494,14 +495,15 @@ public class userSystem {
                     user.getPoints());
     }
 
-        private static void logout() {
+    private void logout() {
         saveUsersToFile();
         currentUser = null;
         System.out.println("Logged out successfully.");
     }
 
     // 捕抓一切需要输入“选择”的地方；如果输入错误的int，会跳出错误讯息
-    private static int getIntInput(int min, int max) {
+    public static int getIntInput(int min, int max) {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
                 int input = Integer.parseInt(scanner.nextLine());
@@ -515,7 +517,8 @@ public class userSystem {
         }
     }
     //捕抓一切需要输入“讯息”的地方；如果输入错误的String，会跳出错误讯息
-    private static String getValidInput(String prompt, String regex, String errorMsg) {
+    public static String getValidInput(String prompt, String regex, String errorMsg) {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine();
@@ -527,7 +530,7 @@ public class userSystem {
     }
     
     //储存用户资料
-    private static void saveUsersToFile() {
+    public void saveUsersToFile() {
         try {
             // 保存 staff 数据到 staff.txt
             BufferedWriter staffWriter = new BufferedWriter(new FileWriter("staff.txt"));
@@ -560,7 +563,7 @@ public class userSystem {
 }
 
     //加载用户资料
-    private static void loadUsersFromFile() {
+    public void loadUsersFromFile() {
     users.clear(); // 清空现有数据
 
     // 加载 staff 数据
@@ -574,7 +577,7 @@ public class userSystem {
                     users.add(user);
                 }
             }
-            System.out.println("Loaded " + getStaffCount() + " staff members from staff.txt");
+            //System.out.println("Loaded " + getStaffCount() + " staff members from staff.txt");
         } catch (IOException e) {
             System.out.println("Error loading staff data: " + e.getMessage());
         }
@@ -591,14 +594,14 @@ public class userSystem {
                     users.add(user);
                 }
             }
-            System.out.println("Loaded " + getCustomerCount() + " customers from customer.txt");
+            //System.out.println("Loaded " + getCustomerCount() + " customers from customer.txt");
         } catch (IOException e) {
             System.out.println("Error loading customer data: " + e.getMessage());
         }
     }
 }
     
-    private static int generateNextID(boolean isStaff) {
+    public int generateNextID(boolean isStaff) {
         if (users.isEmpty()) return 1;
 
         // 如果是 staff，查找最大的 staff ID
