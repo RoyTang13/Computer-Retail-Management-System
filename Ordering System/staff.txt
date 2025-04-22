@@ -1,0 +1,3 @@
+staff1@compumart.com,admin1,P@ssw0rd123,012-3456789,1,25,17\, Taman Tarumt\, Jalan Tarumt\, 81300 Wilayah Kuala Lumpur,100,true
+staff2@compumart.com,manager1,M@nager456,019-8765432,2,30,45\, Jalan Merdeka\, Taman Sejahtera\, 43000 Selangor,50,true
+techsupport@compumart.com,tech1,T3chSupp0rt!,011-11223344,3,28,12\, Lorong Teknologi\, Taman Cyber\, 63000 Cyberjaya,75,true

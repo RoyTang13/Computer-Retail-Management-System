@@ -1,0 +1,3 @@
+customer1@gmail.com,john_doe,J0hnDoe!,013-7788990,1,22,8\, Jalan Mutiara\, Taman Permai\, 81100 Johor Bahru,200,false
+customer2@yahoo.com,jane_smith,J@ne2024,017-3344556,2,35,23\, Persiaran Bukit\, Taman Bukit\, 50250 Kuala Lumpur,150,false
+gamer123@hotmail.com,gamer_pro,G@mingPass,016-9988776,3,19,5\, Jalan Lagenda\, Taman Saga\, 75450 Melaka,300,false
