@@ -13,7 +13,8 @@ public class OrderingSystem {
         System.out.println("Order amount: RM" + amount);
         
         Payment paymentMethod = null;
-
+//        userSystem startUser = new userSystem();
+//        startUser.startUserSystem();开usersystem的
 
         Cart cart =new Cart(customer);
         
