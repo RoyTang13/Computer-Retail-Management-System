@@ -1,9 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -209,7 +203,7 @@ public class Cart {
         case 1: if (currentPage > 1) currentPage--; break;
         case 2: if (currentPage < totalPages) currentPage++; break;
         case 3: editCart(currentPage); break;
-        case 4: return; 
+        case 4: return; // 返回主選單
         default: System.out.println("Invalid input");
     }
     }
@@ -248,7 +242,7 @@ public class Cart {
             String newLine = customer + "," + product + "," + newItem.getQuantity() + "," + newItem.getUnitPrice();
             lines.add(newLine);
            
-           
+           // optional: 顯示寫入什麼
         } else {
             System.out.println("Removed item: " + product);
         }
@@ -472,6 +466,7 @@ public class Cart {
                         Payment paymentmethod = showPaymentPage(customer);
                         Order order = new Order( paymentmethod, customer, selectedItems);
                         order.processOrder();
+                         items.removeAll(selectedItems);
                         String downloadChoice = "";
 
                         while (true) {
@@ -480,7 +475,7 @@ public class Cart {
 
                             if (downloadChoice.equals("yes")) {
                                 Receipt receipt = new Receipt(); 
-                                receipt.generateReceipt(customer, productName, paymentMethod, amount);
+                               // receipt.generateReceipt(customer, productName, paymentMethod, amount);
                                 break;
                             } else if (downloadChoice.equals("no")) {
                                 System.out.println("Thank you for purchasing the product in CompuMart.");
@@ -549,6 +544,7 @@ public class Cart {
                         uniqueIndexes.add(index);
                     } else {
                         System.out.println("Invalid item number: " + (index + 1));
+                        return new ArrayList<>();
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input: " + s);
@@ -556,15 +552,15 @@ public class Cart {
             }
 
             for (int index : uniqueIndexes) {
-                selectedItems.add(items.get(index));
-                items.remove(index);
+                selectedItems.add(items.get(index)); 
             }
 
 
             if (selectedItems.isEmpty()) {
                 System.out.println("No items selected for checkout.");
+                
             }
-
+            else{
             System.out.println("\nYou selected the following products for checkout:");
             System.out.println("----------------------------------------------------------------------------");
             System.out.printf("%-25s %10s %15s %15s%n", "Product Name", "Quantity", "Unit Price", "Total Price");
@@ -581,7 +577,7 @@ public class Cart {
             }
 
 
-            System.out.printf("%-51s %15.2f%n", "Total Amount:", totalamount);
+            System.out.printf("%-51s %15.2f%n", "Total Amount:", totalamount);}
 
 
 
@@ -602,7 +598,9 @@ public class Cart {
                 return selectedItems;
 
             } else if (choice == 2) {
-
+              
+   
+            
                return new ArrayList<>();
             } else {
                 System.out.println("Invalid choice. Please enter 1 or 2.");
@@ -702,7 +700,7 @@ public class Cart {
                 return;
             }
 
-            
+            // 顯示所有訂單編號給使用者選擇
             System.out.println("\nOrders found for " + customerName + ":");
             for (int i = 0; i < orders.size(); i++) {
                 for (String line : orders.get(i)) {
@@ -713,17 +711,17 @@ public class Cart {
                 }
             }
 
-            
+            // 要求使用者輸入要查看的訂單
             System.out.print("Enter order number to view: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine(); // 清除換行
 
             if (choice < 1 || choice > orders.size()) {
                 System.out.println("Invalid choice.");
                 return;
             }
 
-            
+            // 顯示選中的訂單內容
             System.out.println("\n-------------- ORDER --------------");
             for (String line : orders.get(choice - 1)) {
                 System.out.println(line);
@@ -763,7 +761,7 @@ public class Cart {
                 }
 
                 if (isInsideOrder) {
-                    currentOrder.add(line); 
+                    currentOrder.add(line); // 只要在一筆訂單中就先記錄
                 }
             }
         } catch (IOException e) {
@@ -776,15 +774,3 @@ public class Cart {
     }
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
