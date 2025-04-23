@@ -179,7 +179,7 @@ public class userSystem {
             System.out.println("1. View Profile");
             System.out.println("2. Menu");
             System.out.println("3. Cart");
-            System.out.println("4. Make Payment");
+           
             if (currentUser.isStaff()) {
                 System.out.println("5. Points System");
                 System.out.println("6. View All Users");
@@ -197,7 +197,7 @@ public class userSystem {
                 case 1 -> viewProfile();
                 case 2 -> editProfile();//change this
                 case 3 -> editProfile();//change this
-                case 4 -> editProfile();//change this
+              
                 case 5 ->{
                     if (currentUser.isStaff()) {
                         managePoints();
