@@ -495,8 +495,8 @@ public class userSystem {
                     user.getPoints());
     }
 
-    private void logout() {
-        saveUsersToFile();
+    public static void logout() {
+        
         currentUser = null;
         System.out.println("Logged out successfully.");
     }
