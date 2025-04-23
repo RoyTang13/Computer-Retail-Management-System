@@ -136,7 +136,7 @@ public class User{
     }
     //更改读取资料时样式
     public static User fromTextFormat(String textLine) {
-    String[] parts = textLine.split("(?<!\\\\\\\\),");
+    String[] parts = textLine.split("(?<!\\\\),");
     
     return new User(
         unescapeField(parts[0]),  // email
