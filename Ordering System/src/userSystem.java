@@ -15,17 +15,17 @@ public class userSystem {
     private User currentUser = null;
     
     public void startUserSystem(){
-        userSystem system = new userSystem();
-        system.loadUsersFromFile();
+        
+        loadUsersFromFile();
         
         // 检查员工账号，若为0，自动注册新员工账号
-        if (system.getStaffCount() == 0) {
+        if (getStaffCount() == 0) {
             System.out.println("\n=== SYSTEM INITIALIZATION ===");
             System.out.println("No staff accounts found. Creating first staff account.");
-            system.registerFirstStaff();
+            registerFirstStaff();
         }
         
-        system.showMainMenu();
+        showMainMenu();
     }
 
     //算总共有几个员工账号
@@ -149,7 +149,7 @@ public class userSystem {
         String username = getValidInput("Enter staff username (4-20 word): ", 
                                         "^[a-zA-Z0-9]{4,20}$", 
                                         "Username must be 4-20 number or letter");
-        String password = getValidInput("Enter new password: ", 
+        String password = getValidInput("Enter new password:", 
                                         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
                                         "Password must contain at least 8 characters, " +
                                         "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
@@ -179,7 +179,7 @@ public class userSystem {
             System.out.println("1. View Profile");
             System.out.println("2. Menu");
             System.out.println("3. Cart");
-           
+            System.out.println("4. Make Payment");
             if (currentUser.isStaff()) {
                 System.out.println("5. Points System");
                 System.out.println("6. View All Users");
@@ -197,7 +197,7 @@ public class userSystem {
                 case 1 -> viewProfile();
                 case 2 -> editProfile();//change this
                 case 3 -> editProfile();//change this
-              
+                case 4 -> editProfile();//change this
                 case 5 ->{
                     if (currentUser.isStaff()) {
                         managePoints();
@@ -264,7 +264,7 @@ public class userSystem {
         System.out.println("3. Change Phone");
         System.out.println("4. Change Age");
         System.out.println("5. Change Address");
-        System.out.println("6. Back to Menu");
+        System.out.println("0. Back to Menu");
         System.out.print("Enter your choice: ");
         
         int choice = getIntInput(1, 6);
@@ -279,7 +279,7 @@ public class userSystem {
                 saveUsersToFile();
             }
             case 2 -> {
-                String newPassword = getValidInput("Enter new password: ", 
+                String newPassword = getValidInput("Enter new password:", 
                                         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
                                         "Password must contain at least 8 characters, " +
                                         "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
@@ -296,9 +296,13 @@ public class userSystem {
                 saveUsersToFile();
             }
             case 4 -> {
+                int newAge;
                 System.out.print("Enter new age: ");
-                int newAge = getIntInput(1, 100);
-                scanner.nextLine(); // 清除换行符
+                if(currentUser.isStaff()){
+                newAge = getIntInput(18, 100);
+                }else{
+                newAge = getIntInput(1, 100);
+                }
                 currentUser.setAge(newAge);
                 System.out.println("Age updated successfully.");
                 saveUsersToFile();
@@ -310,7 +314,7 @@ public class userSystem {
                 System.out.println("Address updated successfully.");
                 saveUsersToFile();
             }
-            case 6 -> {
+            case 0 -> {
             }
             default -> {
                 System.out.println("Invalid input, Please try again");
@@ -326,7 +330,7 @@ public class userSystem {
         System.out.println("Current Points: " + currentUser.getPoints());
         System.out.println("1. Earn Points");
         System.out.println("2. Redeem Points");
-        System.out.println("3. Back to Menu");
+        System.out.println("0. Back to Menu");
         System.out.print("Enter your choice: ");
         
         int choice = getIntInput(1, 3);
@@ -350,7 +354,7 @@ public class userSystem {
                     System.out.println("Invalid points. You only have " + currentUser.getPoints() + " points.");
                 }
             }
-            case 3 -> {
+            case 0 -> {
             }
             default -> {
                 System.out.println("Invalid input, Please try again");
@@ -495,7 +499,7 @@ public class userSystem {
                     user.getPoints());
     }
 
-    public static void logout() {
+    private void logout() {
         
         currentUser = null;
         System.out.println("Logged out successfully.");
@@ -539,6 +543,7 @@ public class userSystem {
                     staffWriter.write(user.toTextFormat());
                     staffWriter.newLine();
                     }
+                staffWriter.flush();
                 }
                 
             }catch (IOException e) {
@@ -554,6 +559,7 @@ public class userSystem {
                     customerWriter.write(user.toTextFormat());
                     customerWriter.newLine();
                     }
+                customerWriter.flush();
                 }
                 
                 System.out.println("User data saved to staff.txt and customer.txt");
@@ -564,7 +570,7 @@ public class userSystem {
 
     //加载用户资料
     public void loadUsersFromFile() {
-    users.clear(); // 清空现有数据
+    
 
     // 加载 staff 数据
     File staffFile = new File("staff.txt");
@@ -607,18 +613,18 @@ public class userSystem {
         // 如果是 staff，查找最大的 staff ID
         if (isStaff) {
         return users.stream()
-                .filter(User::isStaff)
-                .mapToInt(User::getUserID)
-                .max()
-                .orElse(0) + 1;
+                    .filter(User::isStaff)
+                    .mapToInt(User::getUserID)
+                    .max()
+                    .orElse(0) + 1;
         }
         // 如果是 customer，查找最大的 customer ID
         else {
         return users.stream()
-                .filter(user -> !user.isStaff())
-                .mapToInt(User::getUserID)
-                .max()
-                .orElse(0) + 1;
+                    .filter(user -> !user.isStaff())
+                    .mapToInt(User::getUserID)
+                    .max()
+                    .orElse(0) + 1;
         }
     }
 }
