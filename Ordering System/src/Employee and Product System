@@ -1,0 +1,315 @@
+import java.util.*;
+
+class Product {
+    String id;
+    String name;
+    String category;
+    double price;
+    int stock;
+
+    Product(String id, String name, String category, double price, int stock) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.stock = stock;
+    }
+
+    public void display() {
+        System.out.println("ID: " + id + " | Name: " + name + " | Category: " + category + " | Price: RM" + price + " | Stock: " + stock);
+    }
+}
+
+class SystemForProducts {
+    Product[] products = new Product[100];
+    int count = 0;
+
+    public void addProduct(String id, String name, String category, double price, int stock) {
+        if (count < products.length) {
+            products[count] = new Product(id, name, category, price, stock);
+            count++;
+        } else {
+            System.out.println("Product list is full.");
+        }
+    }
+
+    public void displayMenu() {
+        if (count == 0) {
+            System.out.println("No products available.");
+            return;
+        }
+        for (int i = 0; i < count; i++) {
+            products[i].display();
+        }
+    }
+
+    public void searchProduct(String keyword) {
+        boolean found = false;
+        for (int i = 0; i < count; i++) {
+            if (products[i].name.toLowerCase().contains(keyword.toLowerCase()) ||
+                products[i].category.toLowerCase().contains(keyword.toLowerCase())) {
+                products[i].display();
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("Product not found.");
+        }
+    }
+
+    public Product findProductByName(String name) {
+        for (int i = 0; i < count; i++) {
+            if (products[i].name.equalsIgnoreCase(name)) {
+                return products[i];
+            }
+        }
+        return null;
+    }
+
+    public boolean removeProduct(String productName) {
+        for (int i = 0; i < count; i++) {
+            if (products[i].name.equalsIgnoreCase(productName)) {
+                for (int j = i; j < count - 1; j++) {
+                    products[j] = products[j + 1];
+                }
+                products[--count] = null;
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+class EmployeeSystem {
+    private final String ADMIN_USERNAME = "admin";
+    private final String ADMIN_PASSWORD = "123";
+    private boolean isAdminLoggedIn = false;
+    SystemForProducts productSystem;
+
+    EmployeeSystem(SystemForProducts productSystem) {
+        this.productSystem = productSystem;
+    }
+
+    public boolean login(String username, String password) {
+        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
+            isAdminLoggedIn = true;
+            System.out.println("Admin logged in successfully.");
+            return true;
+        }
+        System.out.println("Invalid credentials.");
+        return false;
+    }
+
+    public void logout() {
+        isAdminLoggedIn = false;
+        System.out.println("Logged out successfully.");
+    }
+
+    public boolean isAdminLoggedIn() {
+        return isAdminLoggedIn;
+    }
+
+    public void updateProduct(String productName, double price, int stock) {
+        if (!isAdminLoggedIn) {
+            System.out.println("Access denied.");
+            return;
+        }
+        if (price < 0 || stock < 0) {
+            System.out.println("Price and stock must not be negative.");
+            return;
+        }
+        Product product = productSystem.findProductByName(productName);
+        if (product != null) {
+            product.price = price;
+            product.stock = stock;
+            System.out.println("Product updated.");
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
+
+    public void addStock(String productName, int stockToAdd) {
+        if (!isAdminLoggedIn) {
+            System.out.println("Access denied.");
+            return;
+        }
+        if (stockToAdd < 0) {
+            System.out.println("Stock to add must be non-negative.");
+            return;
+        }
+        Product product = productSystem.findProductByName(productName);
+        if (product != null) {
+            product.stock += stockToAdd;
+            System.out.println("Stock updated.");
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
+
+    public void addNewProduct(String id, String name, String category, double price, int stock) {
+        if (!isAdminLoggedIn) {
+            System.out.println("Access denied. Please login as admin.");
+            return;
+        }
+        if (price < 0 || stock < 0) {
+            System.out.println("Price and stock must be non-negative.");
+            return;
+        }
+        productSystem.addProduct(id, name, category, price, stock);
+        System.out.println("Product added successfully.");
+    }
+
+    public void removeProduct(String productName) {
+        if (!isAdminLoggedIn) {
+            System.out.println("Access denied.");
+            return;
+        }
+        boolean removed = productSystem.removeProduct(productName);
+        if (removed) {
+            System.out.println("Product removed successfully.");
+        } else {
+            System.out.println("Product not found.");
+        }
+    }
+
+    public void adminMenu(Scanner sc) {
+        while (isAdminLoggedIn) {
+            System.out.println("\n--- Admin Menu ---");
+            System.out.println("1. Update Product");
+            System.out.println("2. Add Stock");
+            System.out.println("3. Remove Product");
+            System.out.println("4. Add New Product");
+            System.out.println("5. Logout");
+            System.out.print("Choose option: ");
+
+            int adminChoice = -1;
+            try {
+                adminChoice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+
+            switch(adminChoice) {
+                case 1:
+                    System.out.print("Enter product name: ");
+                    String name = sc.nextLine();
+                    System.out.print("New price: ");
+                    double price = Double.parseDouble(sc.nextLine());
+                    System.out.print("New stock: ");
+                    int stock = Integer.parseInt(sc.nextLine());
+                    updateProduct(name, price, stock);
+                    break;
+                case 2:
+                    System.out.print("Enter product name: ");
+                    String pname = sc.nextLine();
+                    System.out.print("Stock to add: ");
+                    int stockAdd = Integer.parseInt(sc.nextLine());
+                    addStock(pname, stockAdd);
+                    break;
+                case 3:
+                    System.out.print("Enter product name to remove: ");
+                    String removeName = sc.nextLine();
+                    removeProduct(removeName);
+                    break;
+                case 4:
+                    System.out.print("Enter product ID: ");
+                    String id = sc.nextLine();
+                    System.out.print("Enter product name: ");
+                    String newName = sc.nextLine();
+                    System.out.print("Enter category: ");
+                    String category = sc.nextLine();
+                    System.out.print("Enter price: ");
+                    double newPrice = Double.parseDouble(sc.nextLine());
+                    System.out.print("Enter stock: ");
+                    int newStock = Integer.parseInt(sc.nextLine());
+                    addNewProduct(id, newName, category, newPrice, newStock);
+                    break;
+                case 5:
+                    logout();
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+}
+
+public class ComputerRetailSystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        SystemForProducts productSystem = new SystemForProducts();
+        EmployeeSystem employeeSystem = new EmployeeSystem(productSystem);
+
+       
+        productSystem.addProduct("001", "Dell Laptop", "Computer", 3500.00, 10);
+        productSystem.addProduct("002", "Apple Laptop", "Computer", 7500.00, 10);
+        productSystem.addProduct("003", "HP Laptop", "Computer", 3000.00, 10);
+        productSystem.addProduct("004", "Lenovo Laptop", "Computer", 4500.00, 10);
+        productSystem.addProduct("005", "ASUS Laptop", "Computer", 2500.00, 10);
+        
+        productSystem.addProduct("006", "Intel i5 CPU", "CPU", 1200.00, 5);
+        productSystem.addProduct("007", "Intel i7 CPU", "CPU", 2100.00, 5);
+        productSystem.addProduct("008", "Intel i9 CPU", "CPU", 3000.00, 5);
+        productSystem.addProduct("009", "AMD Ryzen 5  CPU", "CPU", 2000.00, 5);
+        productSystem.addProduct("010", "AMD Ryzen 7", "CPU", 3200.00, 5);
+        
+        productSystem.addProduct("011", "Mechanical Keyboard", "Keyboard", 250.00, 25);
+        productSystem.addProduct("012", "Membrane Keyboard", "Keyboard", 350.00, 35);
+        productSystem.addProduct("013", "Scissor Switch Keyboard", "Keyboard", 300.00, 45);
+        
+        productSystem.addProduct("014", "Sony", "Headsets/Headphones", 50.00, 15);
+        productSystem.addProduct("015", "JBL", "Headsets/Headphones", 60.00, 15);
+        productSystem.addProduct("016", "Apple", "Headsets/Headphones", 250.00, 15);
+        productSystem.addProduct("017", "Bose", "Headsets/Headphones", 100.00, 15);
+        productSystem.addProduct("018", "Razer", "Headsets/Headphones", 25.00, 15);
+        
+        productSystem.addProduct("019", "Blue", "Laptop bags", 25.00, 10);
+        productSystem.addProduct("020", "Red", "Laptop bags", 25.00, 13);
+        productSystem.addProduct("021", "Black", "Laptop bags", 25.00, 42);
+        productSystem.addProduct("022", "Grey", "Laptop bags", 25.00, 34);
+        productSystem.addProduct("023", "Green", "Laptop bags", 25.00, 40);
+        
+        productSystem.addProduct("024", "Adjustable/Ergonomic", "Laptop stand", 20.00, 20);
+        productSystem.addProduct("025", "Portable/Foldable", "Laptop stand", 30.00, 20);
+
+        while (true) {
+            System.out.println("\n=== Computer Retail System ===");
+            System.out.println("Admin Status: " + (employeeSystem.isAdminLoggedIn() ? "Logged In" : "Logged Out"));
+            System.out.println("1. View Products");
+            System.out.println("2. Search Product");
+            System.out.println("3. Admin Login");
+            System.out.print("Choose option: ");
+
+            int choice = -1;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+
+            switch(choice) {
+                case 1:
+                    productSystem.displayMenu();
+                    break;
+                case 2:
+                    System.out.print("Enter product name/category to search: ");
+                    String keyword = sc.nextLine();
+                    productSystem.searchProduct(keyword);
+                    break;
+                case 3:
+                    System.out.print("Username: ");
+                    String user = sc.nextLine();
+                    System.out.print("Password: ");
+                    String pass = sc.nextLine();
+                    if (employeeSystem.login(user, pass)) {
+                        employeeSystem.adminMenu(sc);
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}
