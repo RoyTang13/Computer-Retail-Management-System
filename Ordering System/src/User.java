@@ -8,6 +8,7 @@ public class User{
     private int age;
     private String address;
     private int points;
+    private double creditBalance;
     private final boolean isStaff;
 
     public User(String email, String userName, String password, String phone, 
@@ -19,8 +20,9 @@ public class User{
         this.userID = userId;
         this.age = age;
         this.address = address;
-        this.points = 0;
         this.isStaff = isStaff;
+        this.points = 0;
+        this.creditBalance = 0.0;
     }
 
 
@@ -89,22 +91,41 @@ public class User{
         this.points = points;
         return this;
     }
-
+    
     public boolean isStaff() {
         return isStaff;
     }
 
-    public void addPoints(int pointsToAdd) {
-        this.points += pointsToAdd;
+    public void addPoints(int earned) {
+        points += earned;
     }
 
-    public boolean deductPoints(int pointsToDeduct) {
-        if (this.points >= pointsToDeduct) {
-            this.points -= pointsToDeduct;
+    public boolean redeemPoints(double amount) {
+        int requiredPoints = (int) amount;
+        if (points >= requiredPoints) {
+            points -= requiredPoints;
             return true;
         }
         return false;
     }
+
+    public double getCreditBalance() {
+        return creditBalance;
+    }
+
+    public void addCredit(double amount) {
+        this.creditBalance += amount;
+    }
+
+    public boolean deductCredit(double amount) {
+        if (creditBalance >= amount) {
+            creditBalance -= amount;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     //防止存入资料时因为“,”,“\\","\n"，出现问题
     private String escapeField(String field){
         if (field == null) return "";
@@ -124,6 +145,7 @@ public class User{
         String.valueOf(age),
         escapeField(address),
         String.valueOf(points),
+        String.valueOf(creditBalance),
         String.valueOf(isStaff)
         );
     }
@@ -146,8 +168,19 @@ public class User{
         Integer.parseInt(parts[4]),  // userID
         Integer.parseInt(parts[5]),  // age
         unescapeField(parts[6]),  // address
-        Boolean.parseBoolean(parts[8])  // isStaff
-        ).setPoints(Integer.parseInt(parts[7])); // points
+        Boolean.parseBoolean(parts[9])  // isStaff
+        ).setCustomerData(
+          Integer.parseInt(parts[7]),   //points   
+          Double.parseDouble(parts[8])  //credit  
+          );
+         
+    }
+    public User setCustomerData(int points, double credit){
+        if(!isStaff){
+            this.points = points;
+            this.creditBalance = credit;
+        }
+        return this;
     }
     
     @Override
