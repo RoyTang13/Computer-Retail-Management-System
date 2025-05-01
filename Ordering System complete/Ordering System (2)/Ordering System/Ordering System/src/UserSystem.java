@@ -252,7 +252,8 @@ public class UserSystem {
                                 System.out.println("1. Computer");
                                 System.out.println("2. Keyboard");
                                 System.out.println("3. CPU");
-                                System.out.println("4. Back");
+                                System.out.println("4. View Cart");
+                                System.out.println("5. Back");
                                 System.out.println("Select Product Type:");
                                 int choiceOne = scanner.nextInt();
                                 scanner.nextLine(); // consume newline
@@ -263,7 +264,8 @@ public class UserSystem {
                                     case 1 -> category = "Computer";
                                     case 2 -> category = "Keyboard";
                                     case 3 -> category = "CPU";
-                                    case 4 -> { loop=false;
+                                    case 4 -> cart.viewCart();
+                                    case 5 -> { loop=false;
                                                 break;}
                                     default -> {
                                         System.out.println("Invalid choice.");
