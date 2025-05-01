@@ -126,20 +126,20 @@ public class Cart {
 
             // 顯示操作選項
             System.out.println("\nOptions:");
-            if (currentPage > 1) System.out.println("1. Previous Page");
-            if (currentPage < totalPages) System.out.println("2. Next Page");
-            System.out.println("3. Edit curernt page cart  ");
-            System.out.println("4. Exit");
+            System.out.println("1. Edit curernt page cart  ");
+            if (currentPage > 1) System.out.println("2. Previous Page");
+            if (currentPage < totalPages) System.out.println("3. Next Page");
+            System.out.println("0. Exit");
 
             System.out.print("Enter your choice: ");
             int input = scanner.nextInt();
             scanner.nextLine();
 
            switch (input) {
-            case 1: if (currentPage > 1) currentPage--; break;
-            case 2: if (currentPage < totalPages) currentPage++; break;
-            case 3: editCart(currentPage); break;
-            case 4: return; 
+            case 1: editCart(currentPage); break;
+            case 2: if (currentPage > 1) currentPage--; break;
+            case 3: if (currentPage < totalPages) currentPage++; break;
+            case 0: return; 
             default: System.out.println("Invalid input");
         }
         }
