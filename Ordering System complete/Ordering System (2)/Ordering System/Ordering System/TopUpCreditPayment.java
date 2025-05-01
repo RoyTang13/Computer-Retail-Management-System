@@ -17,6 +17,7 @@ public class TopUpCreditPayment implements Payment {
             customer.deductCredit(amount);
             System.out.println("Payment successful using Top-Up Credit!");
             System.out.println("Remaining balance: RM" + String.format("%.2f", customer.getCreditBalance()));
+            system.saveUsersToFile();
             return true;
         } else {
             System.out.println("Not enough credit balance to complete the payment.");
