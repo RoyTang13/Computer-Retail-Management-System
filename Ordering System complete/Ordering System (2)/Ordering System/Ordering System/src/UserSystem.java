@@ -145,7 +145,7 @@ public class UserSystem {
         }
         
         String phone = getValidInput("Enter customer phone (e.g 012-3456789): ", 
-                                     "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                     "^01[0-9]-\\d{7,8}$", 
                                      "Invalid phone number");
         if(phone == null){
             return;
@@ -195,7 +195,7 @@ public class UserSystem {
         }
         
         String phone = getValidInput("Enter staff phone (e.g 012-3456789): ", 
-                                     "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                     "^01[0-9]-\\d{7,8}$", 
                                      "Invalid phone number");
         if(phone == null){
             return;
@@ -441,7 +441,7 @@ public class UserSystem {
             }
             case 3 -> {
                 String newPhone = getValidInput("Enter new phone: ", 
-                                                "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                                "^01[0-9]-\\d{7,8}$", 
                                                 "Invalid phone number");
                 currentUser.setPhone(newPhone);
                 System.out.println("Phone updated successfully.");
