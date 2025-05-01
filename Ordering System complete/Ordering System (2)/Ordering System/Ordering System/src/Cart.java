@@ -113,7 +113,7 @@ public class Cart {
             return;
         }
 
-        int itemsPerPage = 5;
+        int itemsPerPage = 10;
         int totalPages = (int) Math.ceil((double) items.size() / itemsPerPage);
         int currentPage = 1;
 
