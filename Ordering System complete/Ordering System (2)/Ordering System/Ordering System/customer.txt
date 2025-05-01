@@ -1,0 +1,5 @@
+jesus@gmail.com,jesus,Jesus123@,0123456789,1,18,kepong,0,0.0,false
+jack@gmail.com,Jack,Jack123@,012-4567893,2,18,KAJANG,5594,91595.0,false
+amy@gmail.com,Amyya,Amy123@,012-1234567,3,22,Petaling Jaya,1230,25320.0,false
+bob@gmail.com,Bobbie,Bob123@,012-2345678,4,25,Subang Jaya,19775,1222.0,false
+cindy@gmail.com,Cindy,Cindy123@,012-3456789,5,20,Cheras,210,4570.0,false

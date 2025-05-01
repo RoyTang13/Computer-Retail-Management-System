@@ -1,0 +1,12 @@
+============ Receipt ============
+Company: CompuMart
+Customer Name: John
+Purchase Date: 2025-04-26 22:00:54
+
+Items:
+- Bluetooth Adapter x7 @ RM15.0
+
+Payment Method: Point Payment
+Total Price: RM105.00
+Point Balance: 10095 points
+=================================

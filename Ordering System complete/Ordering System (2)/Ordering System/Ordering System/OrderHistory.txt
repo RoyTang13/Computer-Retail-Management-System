@@ -1,0 +1,16 @@
+
+OrderID: 1746095369535-196
+Customer: Bobbie
+Payment Method: Top-Up Credit
+Total Amount: 18900.0
+Products:
+- Lenovo Laptop - Intel i5 - 8GB, Qty: 1, UnitPrice: 4500.0
+- Gigabyte Aero - Intel i9 - 32GB, Qty: 2, UnitPrice: 7200.0
+-----
+OrderID: 1746098168366-959
+Customer: Jack
+Payment Method: Top-Up Credit
+Total Amount: 4140.0
+Products:
+- Isonic003 - Intel i5 - 4GB, Qty: 18, UnitPrice: 230.0
+-----

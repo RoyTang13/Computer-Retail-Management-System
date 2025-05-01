@@ -1,0 +1,3 @@
+admin@gmail.com,admin,Admin123@,012-3456789,1,30,18\, Taman tarumt\, jalan tarumt \, 81300 Kuala Lumpur,0,0.0,true
+Staff001@gmail.com,Staff001,Staff123@,012-9874839,2,19,tarumt,0,0.0,true
+Staff002@gmail.com,Staff002,Staff002@,0127865432,3,19,Tarumt,0,0.0,true
