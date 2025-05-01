@@ -205,7 +205,7 @@ public class Cart {
                 return;
             }
 
-            int itemsPerPage = 5;
+            int itemsPerPage = 10;
             int totalPages = (int) Math.ceil((double) items.size() / itemsPerPage);
             page = Math.max(1, Math.min(page, totalPages));
 
