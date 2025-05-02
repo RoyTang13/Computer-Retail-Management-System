@@ -1,0 +1,11 @@
+============= Receipt =============
+Company: CompuMart
+Customer Name: John
+Purchase Date: 2025-04-26 22:03:45
+Product Name                Quantity      Unit Price     Total Price
+- USB Hub x4 @ RM25.0
+
+Payment Method: Point Payment
+Total Price: RM100.00
+Point Balance: 10100 points
+===================================

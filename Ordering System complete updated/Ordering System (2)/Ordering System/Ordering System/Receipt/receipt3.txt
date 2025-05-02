@@ -1,0 +1,15 @@
+============= Receipt =============
+Company: CompuMart
+Customer Name: John
+Purchase Date: 2025-04-26 22:04:44
+
+Products Purchased:
+----------------------------------------------------------------------------
+Product Name                Quantity      Unit Price     Total Price
+----------------------------------------------------------------------------
+- Webcam Cover x18 @ RM5.0
+
+Payment Method: Point Payment
+Total Price: RM90.00
+Point Balance: 10110 points
+===================================

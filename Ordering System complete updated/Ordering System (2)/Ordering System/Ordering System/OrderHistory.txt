@@ -1,0 +1,44 @@
+
+OrderID: 1746095369535-196
+Customer: Bobbie
+Payment Method: Top-Up Credit
+Total Amount: 18900.0
+Products:
+- Lenovo Laptop - Intel i5 - 8GB, Qty: 1, UnitPrice: 4500.0
+- Gigabyte Aero - Intel i9 - 32GB, Qty: 2, UnitPrice: 7200.0
+-----
+OrderID: 1746098168366-959
+Customer: Jack
+Payment Method: Top-Up Credit
+Total Amount: 4140.0
+Products:
+- Isonic003 - Intel i5 - 4GB, Qty: 18, UnitPrice: 230.0
+-----
+OrderID: 1746104851992-205
+Customer: jesus
+Payment Method: Bank Payment
+Total Amount: 10000.0
+Products:
+- Dell Laptop - Intel i5 - 8GB, Qty: 2, UnitPrice: 5000.0
+-----
+OrderID: 1746200225035-490
+Customer: jesus
+Payment Method: Bank Payment
+Total Amount: 37500.0
+Products:
+- Apple Laptop - Apple M1 - 16GB, Qty: 5, UnitPrice: 7500.0
+-----
+OrderID: 1746201499874-721
+Customer: jesus
+Payment Method: Bank Payment
+Total Amount: 60.0
+Products:
+- Asus002 - Intel i7 - 16GB, Qty: 3, UnitPrice: 20.0
+-----
+OrderID: 1746202808853-636
+Customer: jesus
+Payment Method: Bank Payment
+Total Amount: 2500.0
+Products:
+- ASUS Laptop - AMD Ryzen 3 - 8GB, Qty: 1, UnitPrice: 2500.0
+-----

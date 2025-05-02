@@ -1,0 +1,30 @@
+Computer,001,Dell Laptop,5000.00,8,Intel i5,8
+Computer,002,Apple Laptop,7500.00,2,Apple M1,16
+Computer,003,HP Laptop,3000.00,10,Intel i3,4
+Computer,004,Lenovo Laptop,4500.00,8,Intel i5,8
+Computer,005,ASUS Laptop,2500.00,9,AMD Ryzen 3,8
+CPU,006,Intel i5 CPU,1200.00,3,6,12
+CPU,007,Intel i7 CPU,2100.00,5,8,16
+CPU,008,Intel i9 CPU,3000.00,5,10,20
+CPU,009,AMD Ryzen 5 CPU,2000.00,5,6,12
+CPU,010,AMD Ryzen 7,3200.00,5,8,16
+Keyboard,011,Mechanical Keyboard,250.00,13,true
+Keyboard,012,Membrane Keyboard,350.00,21,false
+Computer,013,Acer Laptop,3800.00,6,Intel i5,8
+Computer,014,Asus002,20.00,4,Intel i7,16
+Keyboard,015,Keyboard Sample,222.00,6,false
+Computer,016,MSI Thin,4800.00,9,Intel i7,16
+Computer,017,Asus ROG,6700.00,4,Intel i9,32
+Computer,018,Mac Mini,7200.00,5,Apple M2,16
+CPU,019,Intel Xeon E,2900.00,4,12,24
+CPU,020,AMD Threadripper,6500.00,2,16,32
+CPU,021,Intel i3 CPU,800.00,6,4,8
+CPU,022,AMD Ryzen 3,1000.00,7,4,8
+Keyboard,023,Corsair K70,599.00,5,true
+Keyboard,024,Logitech K380,199.00,15,false
+Keyboard,025,Razer Cynosa,399.00,10,false
+Keyboard,026,Ducky One 2,650.00,4,true
+Computer,027,Surface Laptop,6200.00,3,Intel i7,16
+Computer,028,Gigabyte Aero,7200.00,0,Intel i9,32
+CPU,029,Intel Pentium G,450.00,8,2,4
+Keyboard,030,SteelSeries Apex,499.00,6,true
