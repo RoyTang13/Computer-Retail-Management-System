@@ -5,7 +5,7 @@ class PointPayment implements Payment {
     public PointPayment(User customer) {
         this.customer = customer;
     }
-
+    @Override
     public boolean processPayment(double amount) {
         if (customer.redeemPoints(amount)) {
             System.out.println("Processing point payment of " + (int) amount + " points.");
@@ -15,7 +15,7 @@ class PointPayment implements Payment {
             return false;
         }
     }
-
+    @Override
     public String getPaymentMethod() {
         return "Point Payment";
     }
