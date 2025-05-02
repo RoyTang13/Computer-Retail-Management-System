@@ -306,7 +306,7 @@ import java.util.Scanner;
         }
         
         String phone = system.getValidInput("Enter staff phone (e.g 012-3456789): ", 
-                                     "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
+                                     "^01[0-9]-\\d{7,8}$", 
                                      "Invalid phone number");
         if(phone == null){
             return;
