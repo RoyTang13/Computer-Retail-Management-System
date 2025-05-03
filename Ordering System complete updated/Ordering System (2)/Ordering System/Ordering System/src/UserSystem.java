@@ -131,8 +131,14 @@ public class UserSystem {
         String username = getValidInput("Enter customer username (4-20 word): ", 
                                         "^[a-zA-Z0-9]{4,20}$", 
                                         "Username must be 4-20 number or letter");
-       if(username == null){
+        
+        if(ifUsernameHave(username)) {
+        System.out.println("Username '" + username + "' is already taken. Please choose another.");
+        return;
+        }  
+        if(username == null){
             return;
+  
         }
         
         String password = getValidInput("Enter new password: ", 
@@ -181,6 +187,11 @@ public class UserSystem {
         String username = getValidInput("Enter staff username (4-20 word): ", 
                                         "^[a-zA-Z0-9]{4,20}$", 
                                         "Username must be 4-20 number or letter");
+        if(ifUsernameHave(username)) {
+        System.out.println("Username '" + username + "' is already taken. Please choose another.");
+        return;
+        }  
+        
         if(username == null){
             return;
         }
@@ -532,6 +543,16 @@ public class UserSystem {
         System.out.println("Logged out successfully.");
     }
 
+    public Boolean ifUsernameHave(String username){
+        for(User user : users){
+            if(user.getUserName().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
     // 捕抓一切需要输入“选择”的地方；如果输入错误的int，会跳出错误讯息
     public int getIntInput(int min, int max) {
         Scanner scanner = new Scanner(System.in);
