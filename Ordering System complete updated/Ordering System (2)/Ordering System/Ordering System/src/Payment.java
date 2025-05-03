@@ -83,7 +83,7 @@ import java.util.Scanner;
                                     System.out.println("\u001B[31mInvalid card number. Must be 16 digits.\u001B[0m");
                                 }
                             } while (!isValid);
-                            System.out.println("Enter Expiry Date MM/YY");
+                            System.out.println("Enter Expiry Date MM/YY: ");
                             String expiryDate = scanner.nextLine();
                             while (!expiryDate.matches("(0[1-9]|1[0-2])/\\d{2}")) {
                                 System.out.println("\u001B[31mInvalid format. Use MM/YY.\u001B[0m");
