@@ -11,6 +11,7 @@ class BankPayment implements Payment {
             this.cvv = cvv;
         }
 
+         @Override
         public boolean processPayment(double amount) {
             System.out.println("");
             System.out.println("Processing bank payment of RM" + String.format("%.2f", amount));
@@ -33,6 +34,8 @@ class BankPayment implements Payment {
                 }
             }
 
+
+            @Override
             public String getPaymentMethod() {
             return "Bank Payment";
             }
