@@ -807,7 +807,8 @@ public class Cart {
                         System.out.printf("%d. %s (%s)\n", i + 1, matches.get(i).getName(), matches.get(i).getProductId());
                     }
                     System.out.print("Select a product number: ");
-                    int choice = scanner.nextInt();
+                    //int choice = scanner.nextInt();
+                    int choice = system.getIntInput(1, matches.size());
                     scanner.nextLine();
 
                     if (choice >= 1 && choice <= matches.size()) {
