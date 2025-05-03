@@ -436,6 +436,9 @@ public class UserSystem {
                 String newEmail = getValidInput("Enter new email: ", 
                                                 "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
                                                 "Invalid email format");
+                if(newEmail == null){
+                    return;
+                }
                 currentUser.setEmail(newEmail);
                 System.out.println("Email updated successfully.");
                 
@@ -445,6 +448,9 @@ public class UserSystem {
                                         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
                                         "Password must contain at least 8 characters, " +
                                         "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
+                if(newPassword == null){
+                    return;
+                }
                 currentUser.setPassword(newPassword);
                 System.out.println("Password updated successfully.");
                 
@@ -453,6 +459,9 @@ public class UserSystem {
                 String newPhone = getValidInput("Enter new phone: ", 
                                                 "^01[0-9]-\\d{7,8}$", 
                                                 "Invalid phone number");
+                if(newPhone == null){
+                    return;
+                }
                 currentUser.setPhone(newPhone);
                 System.out.println("Phone updated successfully.");
                 
@@ -545,7 +554,7 @@ public class UserSystem {
 
     public Boolean ifUsernameHave(String username){
         for(User user : users){
-            if(user.getUserName().equals(username)){
+            if(user.getUserName().equalsIgnoreCase(username)){
                 return true;
             }
         }
