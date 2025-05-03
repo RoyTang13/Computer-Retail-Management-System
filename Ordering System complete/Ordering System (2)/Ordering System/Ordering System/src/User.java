@@ -188,9 +188,7 @@ public class User{
                 email, userName, password, phone, userID, age, address, points, isStaff);
     }
 
-    Object stream() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+  
 
     
     
