@@ -132,6 +132,10 @@ public class UserSystem {
         String username = getValidInput("Enter customer username (4-20 word): ", 
                                         "^[a-zA-Z0-9]{4,20}$", 
                                         "Username must be 4-20 number or letter");
+        if(ifUsernameHave(username)) {
+        System.out.println("Username '" + username + "' is already taken. Please choose another.");
+        return;
+        }  
        if(username == null){
             return;
         }
@@ -428,6 +432,11 @@ public class UserSystem {
                 String newEmail = getValidInput("Enter new email: ", 
                                                 "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
                                                 "Invalid email format");
+                if(newEmail == null){
+
+                    return;
+
+                }
                 currentUser.setEmail(newEmail);
                 System.out.println("Email updated successfully.");
                 
@@ -437,6 +446,11 @@ public class UserSystem {
                                         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$",
                                         "Password must contain at least 8 characters, " +
                                         "including uppercase, lowercase, numbers and special characters (!@#$%^&*)");
+                if(newEmail == null){
+
+                    return;
+
+                }
                 currentUser.setPassword(newPassword);
                 System.out.println("Password updated successfully.");
                 
@@ -445,6 +459,11 @@ public class UserSystem {
                 String newPhone = getValidInput("Enter new phone: ", 
                                                 "^01[0-9]-\\d{7,8}$", 
                                                 "Invalid phone number");
+                if(newEmail == null){
+
+                    return;
+
+                }
                 currentUser.setPhone(newPhone);
                 System.out.println("Phone updated successfully.");
                 
@@ -535,8 +554,24 @@ public class UserSystem {
         System.out.println("Logged out successfully.");
     }
 
+    public Boolean ifUsernameHave(String username){
+
+        for(User user : users){
+
+            if(user.getUserName().equalsIgnoreCase(username)){
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
     // 捕抓一切需要输入“选择”的地方；如果输入错误的int，会跳出错误讯息
-    public static int getIntInput(int min, int max) {
+    public  int getIntInput(int min, int max) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
