@@ -45,7 +45,7 @@
                     System.out.print("Price: ");
                     double price = sc.nextDouble();
                     System.out.print("Quantity: ");
-                    int qty = sc.nextInt();
+                    int qty = system.getIntInput(1, 999);
                     sc.nextLine();
                     
             switch (type) {
@@ -305,8 +305,8 @@
         System.out.println("\n=== Staff Registration ===");
         
         String email = system.getValidInput("Enter staff email: ", 
-                                     "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
-                                     "Invalid email format");
+                                      "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
+                                            "Invalid email format");
         if(email == null){
             return;
         }
@@ -349,7 +349,7 @@
         }
         
         String phone = system.getValidInput("Enter staff phone (e.g 012-3456789): ", 
-                                     "^01[0-9]-\\d{7,8}$", 
+                                     "^\\+?[0-9][-. ]?([0-9][-. ]?){8,14}$", 
                                      "Invalid phone number");
         if(phone == null){
             return;
@@ -436,4 +436,20 @@
         System.out.println("Staff with ID " + idToDelete + " not found.");
  }
 }
+
+
+         public double getDoubleInput() {
+        Scanner sc =new Scanner(System.in);
+        while (true) {
+
+                try {
+                double price = sc.nextDouble();
+                    return price;
+
+            }catch(NumberFormatException e) {
+            System.out.print("Invalid input. Please enter a new price: ");
+        }
+    }
+   }
+        
 }
