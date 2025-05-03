@@ -26,6 +26,7 @@
         public void addNewProductOption(){
             //System.out.print(products);
             Scanner sc =new Scanner(System.in);
+            boolean exists = false;
             int nextIdNum = products.stream()
                         .mapToInt(p -> Integer.parseInt(p.getProductId().replaceAll("[^0-9]", "")))
                         .max()
@@ -66,8 +67,29 @@
                             int ramChoice = sc.nextInt();
                             sc.nextLine();
                             int ram = ramOptions[ramChoice - 1];
-                            addProduct(new Computer(id, name, price, qty, processor, ram));
-                            system.saveProducts();
+                            for (Product p : products) {
+                                    if (p instanceof Computer) {
+                                    Computer c = (Computer) p;
+                                    System.out.println("c.getBrand :"+ c.getBrand());
+                                    System.out.println("processor :"+ processor);
+                                    System.out.println("c.getName():"+ c.getName());
+                                    System.out.println("name :"+ name);
+                                    if (c.getName().equalsIgnoreCase(name)
+                                            &&  c.getBrand().equalsIgnoreCase(processor)
+                                            && c.getWarranty()== ram)
+                                            {
+                                        System.out.println("This Keyboard product already exists!");
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!exists) {
+                                addProduct(new Computer(id, name, price, qty,processor,ram));
+                                system.saveProducts();
+                                  System.out.println("This Computer product adding!");
+                            }
                             break;
                         case 2:
                             System.out.println("1. Mechanical");
@@ -76,9 +98,27 @@
                             int mechChoice = sc.nextInt();
                             sc.nextLine();
                             boolean mech = (mechChoice == 1);
-                            addProduct(new Keyboard(id, name, price, qty, mech));
-                            system.saveProducts();
+                            for (Product p : products) {
+                                if (p instanceof Keyboard) {
+                                    Keyboard kb = (Keyboard) p;
+                                    if (kb.getName().equalsIgnoreCase(name)
+                                            && kb.isMechanical() == mech)
+                                            {
+                                        System.out.println("This Keyboard product already exists!");
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!exists) {
+                                addProduct(new Keyboard(id, name, price, qty,mech));
+                                system.saveProducts();
+                                System.out.println("This Keyboard product adding!");
+                            }
                             break;
+                           
+                           
                         case 3:
                             int[] coreOptions = {2, 4, 6, 8, 12, 16};
                             for (int i = 0; i < coreOptions.length; i++) {
@@ -96,9 +136,27 @@
                             int threadChoice = sc.nextInt();
                             sc.nextLine();
                             int threads = threadOptions[threadChoice - 1];
-                            
-                            addProduct(new CPU(id, name, price, qty, cores, threads));
-                            system.saveProducts();
+
+                            // 檢查是否已有相同產品（以 name、cores、threads 判斷）
+                           
+                            for (Product p : products) {
+                                if (p instanceof CPU) {
+                                    CPU cpu = (CPU) p;
+                                    if (cpu.getName().equalsIgnoreCase(name)
+                                            && cpu.getCores() == cores
+                                            && cpu.getThreads() == threads) {
+                                        System.out.println("This CPU product already exists!");
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!exists) {
+                                addProduct(new CPU(id, name, price, qty, cores, threads));
+                                system.saveProducts();
+                                System.out.println("This CPU product adding!");
+                            }
                             break;
                         default:
                             System.out.println("Invalid type!");
